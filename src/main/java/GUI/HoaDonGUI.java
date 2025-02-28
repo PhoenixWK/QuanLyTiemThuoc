@@ -336,45 +336,51 @@ public class HoaDonGUI extends JPanel {
 			public void itemStateChanged(ItemEvent e) {
 				txtGiaTien.setText(" ");
 				txtLoSX.setText(" ");
-			txtConLai.setText("0");
-			txtSeri.setText("");
-			txtSoLuong.setText("");
+				txtConLai.setText("0");
+				txtSeri.setText("");
+				txtSoLuong.setText("");
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-				SanPham selectedSP = (SanPham) cbbSanPham.getSelectedItem();
-					ChiTietPhieuNhap Ctpn =  new ChiTietPhieuNhap();
-					PhieuNhapBUS pnBus= new PhieuNhapBUS();
-					ChiTietSanPham ctsp= new ChiTietSanPham();
-					ChiTietSanPhamBUS ctspBus= new ChiTietSanPhamBUS();
-					ctsp=ctspBus.timSanPhamTheoMaSP(selectedSP.getMa());
-					Ctpn=pnBus.timChiTietPhieuNhapTheoMaVach(ctsp.getMavach());
+					SanPham selectedSP = (SanPham) cbbSanPham.getSelectedItem();
+					ChiTietPhieuNhap Ctpn = new ChiTietPhieuNhap();
+					PhieuNhapBUS pnBus = new PhieuNhapBUS();
+					ChiTietSanPham ctsp = new ChiTietSanPham();
+					ChiTietSanPhamBUS ctspBus = new ChiTietSanPhamBUS();
+					ctsp = ctspBus.timSanPhamTheoMaSP(selectedSP.getMa());
 
-					if (selectedSP != null) {
-						// Lấy lô sản xuất đầu tiên có số lượng lớn hơn 0
-						String loSanXuat = layLoSanXuatConSoLuong(selectedSP.getMa());
-						System.out.print(selectedSP.getMa());
-						txtLoSX.setText(loSanXuat);
+					// Add null check for ctsp
+					if (ctsp != null) {
+						Ctpn = pnBus.timChiTietPhieuNhapTheoMaVach(ctsp.getMavach());
 
-						if (loSanXuat != null) {
-							spHienTai = hdBUS.getChiTietSP(selectedSP.getMa(), loSanXuat);
-							if (spHienTai != null) {
-								txtGiaTien.setText(String.valueOf(Ctpn.getGiaNhap()*Ctpn.getphantram()+Ctpn.getGiaNhap()));
-								txtLoSX.setText(loSanXuat);
-								txtConLai.setText(spHienTai.getSoLuong() + "");
+						if (selectedSP != null) {
+							// Lấy lô sản xuất đầu tiên có số lượng lớn hơn 0
+							String loSanXuat = layLoSanXuatConSoLuong(selectedSP.getMa());
+							System.out.print(selectedSP.getMa());
+							txtLoSX.setText(loSanXuat);
 
+							if (loSanXuat != null) {
+								spHienTai = hdBUS.getChiTietSP(selectedSP.getMa(), loSanXuat);
+								if (spHienTai != null) {
+									String mavach = ctsp.getMavach();
+									txtGiaTien.setText(String.valueOf(Ctpn.getGiaNhap() * Ctpn.getphantram() / 100 + Ctpn.getGiaNhap()));
+									txtLoSX.setText(loSanXuat);
+									txtSeri.setText(mavach);
+									txtConLai.setText(spHienTai.getSoLuong() + "");
+								} else {
+									txtGiaTien.setText("Dữ liệu sản phẩm không hợp lệ");
+									txtLoSX.setText("Không có dữ liệu lô sản xuất");
+									txtConLai.setText("0");
+								}
 							} else {
-								txtGiaTien.setText("Dữ liệu sản phẩm không hợp lệ");
-								txtLoSX.setText("Không có dữ liệu lô sản xuất");
+								txtGiaTien.setText(" hết hàng ");
+								txtLoSX.setText("Hết hàng ");
 								txtConLai.setText("0");
 							}
-						} else {
-							txtGiaTien.setText(" hết hàng ");
-							txtLoSX.setText("Hết hàng ");
-							txtConLai.setText("0");
-					}
+						}
 					} else {
-//						txtGiaTien.setText("Sản phẩm không hợp lệ");
-//						txtLoSX.setText("Không có lô sản xuất");
-//						txtConLai.setText("0");
+						// Handle the case where ctsp is null
+						txtGiaTien.setText("Không tìm thấy sản phẩm");
+						txtLoSX.setText("Không có dữ liệu lô sản xuất");
+						txtConLai.setText("0");
 					}
 				}
 			}
@@ -571,11 +577,7 @@ public class HoaDonGUI extends JPanel {
 		            txtGiaTien.setText("");
 		            txtConLai.setText("0");
 		            return; // Thoát khỏi hàm nếu không có sản phẩm được chọn
-		        }
-
-		      
-		      
-		        
+				}        
 		        
 		    }
 		});
@@ -610,7 +612,7 @@ public class HoaDonGUI extends JPanel {
 					ThongBao.baoLoi("Không được để trống thông tin");
 					return;
 				}
-			long giaBan; int soLuong;
+				long giaBan; int soLuong;
 				try {
 					giaBan = Integer.parseInt(txtGiaTien.getText());
 					if (giaBan < 0) throw new Exception();
@@ -621,6 +623,7 @@ public class HoaDonGUI extends JPanel {
 				}
 				try {
 					soLuong = Integer.parseInt(txtSoLuong.getText());
+					System.out.println("so luong don: " + soLuong);
 					if (soLuong < 0 || soLuong > spHienTai.getSoLuong()) throw new Exception();
 				}
 				catch (Exception ex) {
@@ -680,6 +683,7 @@ public class HoaDonGUI extends JPanel {
 
 				try {
 					soLuong = Integer.parseInt(txtSoLuong.getText());
+					System.out.println(soLuong);
 					if(soLuong>0 && soLuong<=Integer.parseInt(txtConLai.getText())) {
 						
 						
@@ -872,11 +876,16 @@ public class HoaDonGUI extends JPanel {
 						Long giaBan = Long.parseLong(tableSanPham.getValueAt(selectedRow, 3).toString());
 						int soLuong = Integer.parseInt(tableSanPham.getValueAt(selectedRow, 4).toString());
 
+						
+						ChiTietSanPhamBUS ctspBus = new ChiTietSanPhamBUS();
+						ChiTietSanPham layCTSP = ctspBus.timSanPhamTheoMaSP(masp);
+
 						// Hiển thị dữ liệu trong các trường nhập liệu để chỉnh sửa
 						txtLoSX.setText(losx);
 						cbbSanPham.setSelectedItem(tensp);
 						txtGiaTien.setText(String.valueOf(giaBan));
 						txtSoLuong.setText(String.valueOf(soLuong));
+						txtSeri.setText(layCTSP.getMavach());
 					}
 				}
 			}

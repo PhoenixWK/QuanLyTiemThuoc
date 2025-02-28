@@ -359,6 +359,7 @@ public class HoaDonDAO {
             e.printStackTrace();
             return false;
         }
+
     }
 
     public boolean addHoaDon(HoaDon hd, ArrayList<ChiTietHoaDon> spList, KhachHang kh, boolean useDiem, int diemConLai) {
@@ -421,7 +422,6 @@ public class HoaDonDAO {
                     boolean updated = updateSoLuong(sp.getChiTiet().getMavach(), sp.getSoLuong(), sp.getChiTiet().getLoSanXuat(), sp.getChiTiet().getMaSanPham());
                     if (!updated) {
                         System.out.println("Lỗi khi cập nhật số lượng sản phẩm.");
-                        return false;
                     }
                 }
 
