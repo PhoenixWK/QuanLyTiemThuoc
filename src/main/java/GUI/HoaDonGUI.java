@@ -605,63 +605,7 @@ public class HoaDonGUI extends JPanel {
 		
 		btnThemSP.setPreferredSize(new Dimension(80, 35));
 		btnThemSP.setFont(new Font("Segoe UI", Font.PLAIN, 16));
-		
-		btnThemSP.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (txtGiaTien.getText().isEmpty() || txtSoLuong.getText().isEmpty()) {
-					ThongBao.baoLoi("Không được để trống thông tin");
-					return;
-				}
-				long giaBan; int soLuong;
-				try {
-					giaBan = Integer.parseInt(txtGiaTien.getText());
-					if (giaBan < 0) throw new Exception();
-				}
-				catch (Exception ex) {
-					ThongBao.baoLoi("Vui lòng nhập giá bán số lớn hơn 0");
-					return;
-				}
-				try {
-					soLuong = Integer.parseInt(txtSoLuong.getText());
-					System.out.println("so luong don: " + soLuong);
-					if (soLuong < 0 || soLuong > spHienTai.getSoLuong()) throw new Exception();
-				}
-				catch (Exception ex) {
-					ThongBao.baoLoi("Vui lòng nhập số lượng lớn hơn 0, nhỏ hơn " + spHienTai.getSoLuong());
-					return;
-				}
 
-				ChiTietHoaDon ct = new ChiTietHoaDon(giaBan, soLuong);
-				ct.setChiTiet(spHienTai);
-				String masp = ((SanPham) cbbSanPham.getSelectedItem()).getMa();
-				String tensp = ((SanPham) cbbSanPham.getSelectedItem()).getTen();
-				// String losx =  txtLoSX.getSelectedItem() + "";
-				String losx = txtLoSX.getText();
-				
-				if (!kiemTraSoLuong(masp, losx, soLuong)) {
-					ThongBao.baoLoi("Tổng sản phẩm bán ra của sản phẩm vượt quá tồn kho (" + spHienTai.getSoLuong() + ")");
-					return;
-				}
-				int row = timSP(masp, losx);
-				if (row == -1) {
-					Object [] data = new Object [] {masp,tensp, losx, giaBan, soLuong};
-					modelSanPham.addRow(data);
-					spList.add(ct);
-				}					
-				else {
-					int soLuongCu = spList.get(row).getSoLuong();
-					modelSanPham.removeRow(row);
-					modelSanPham.insertRow(row, new Object [] {masp, tensp, losx, giaBan, soLuong + soLuongCu} );
-					spList.get(row).setSoLuong(soLuong + soLuongCu);
-				}
-				
-				tinhTongTien();
-				lblTong.setText("TỔNG: " + tongTien);
-				lblDiemTichLuy.setText("Điểm Tích Lũy: " + diemTichLuy);
-				
-				clear();
-			}
-		});
 		btnThemSP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Kiểm tra nếu các trường thông tin trống
