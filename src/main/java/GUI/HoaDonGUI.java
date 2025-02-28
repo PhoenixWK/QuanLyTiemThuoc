@@ -528,7 +528,7 @@ public class HoaDonGUI extends JPanel {
 		txtSoLuong.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		txtSoLuong.setColumns(10);
 
-		lblSeri = new JLabel("Seri:");
+		lblSeri = new JLabel("seri:");
 		lblSeri.setFont(new Font("Segoe UI", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblSeri = new GridBagConstraints();
 		gbc_lblSeri.insets = new Insets(0, 0, 5, 5);

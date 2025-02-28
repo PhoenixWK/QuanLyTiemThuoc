@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,6 +36,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import BUS.AnhBUS;
+import BUS.ChiTietSanPhamBUS;
 import BUS.ChuyBUS;
 import BUS.DieuTriBUS;
 import BUS.LoaiSanPhamBUS;
@@ -48,6 +50,8 @@ import DTO.ThanhPhan;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JList;
+import javax.swing.ScrollPaneConstants;
+
 
 public class SuaSanPham extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -55,7 +59,7 @@ public class SuaSanPham extends JDialog {
 	private static JTextField txtMaSP;
 	private static JTextField txtTenSP;
 	private static JTextField txtQuyCach;
-	private static JTextField txtNhaCungCap; //nha cung cap
+	private static JTextArea txtNhaCungCap; //nha cung cap
 	private static JTextArea textDieuTri;
 	private static JTextArea textThanhPhan;
 	private static JTextArea textLuuY;
@@ -68,6 +72,7 @@ public class SuaSanPham extends JDialog {
 	private static DieuTriBUS dieutribus = new DieuTriBUS();
 	private static ChuyBUS chuybus = new ChuyBUS();
 	private static AnhBUS anhbus = new AnhBUS();
+	private static ChiTietSanPhamBUS chitietsanphambus = new ChiTietSanPhamBUS();
 	private static JComboBox<String> cbbLoai;
 	private static String[] arrLspArray;
 	private static String[] arrNsxArray;
@@ -216,25 +221,37 @@ public class SuaSanPham extends JDialog {
 		txtQuyCach.setEnabled(false);
 		txtQuyCach.setBounds(330, 303, 200, 25);
 		getContentPane().add(txtQuyCach);
-		
+
 		// Adjusted label and field for Nha Cung Cap
-		JLabel lblNewLabel_1_6 = new JLabel("Nhà cung cấp :");
-		lblNewLabel_1_6.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-		lblNewLabel_1_6.setBounds(230, 338, 101, 25);
+		JLabel lblNewLabel_1_6 = new JLabel("Nhà cung cấp:");
+		lblNewLabel_1_6.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		lblNewLabel_1_6.setBounds(195, 338, 101, 25);
 		getContentPane().add(lblNewLabel_1_6);
-		
-		txtNhaCungCap = new JTextField();
+
+		txtNhaCungCap = new JTextArea();
 		txtNhaCungCap.setColumns(10);
 		txtNhaCungCap.setEnabled(false);
 		txtNhaCungCap.setBounds(330, 338, 200, 25);
+		txtNhaCungCap.setLineWrap(true);
+		txtNhaCungCap.setWrapStyleWord(true);
 		getContentPane().add(txtNhaCungCap);
+		JScrollPane scrollPane = new JScrollPane(txtNhaCungCap);
+		scrollPane.setBounds(330, 338, 200, 50); // Điều chỉnh kích thước phù hợp
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		getContentPane().add(scrollPane);
+
+		List<String> nccList = chitietsanphambus.layDanhSachNhaCungCap(mathuoc);
+		if (!nccList.isEmpty()) {
+			String nccString = String.join(", ", nccList);
+			txtNhaCungCap.setText(nccString);
+		}
 		
-		// New label to describe the name of nha cung cap
-		JLabel lblNhaCungCapName = new JLabel("Tên nhà cung cấp:");
-		lblNhaCungCapName.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-		lblNhaCungCapName.setBounds(330, 368, 200, 25); // Adjust the y-coordinate as needed
-		getContentPane().add(lblNhaCungCapName);
-		
+//		// New label to describe the name of nha cung cap
+//		JLabel lblNhaCungCapName = new JLabel("Tên nhà cung cấp:");
+//		lblNhaCungCapName.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+//		lblNhaCungCapName.setBounds(330, 368, 200, 25); // Adjust the y-coordinate as needed
+//		getContentPane().add(lblNhaCungCapName);
+//
 		lblLoaiSP = new JLabel("");
 		lblLoaiSP.setBounds(330, 198, 200, 25);
 		getContentPane().add(lblLoaiSP);

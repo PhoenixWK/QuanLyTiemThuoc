@@ -4,6 +4,7 @@ import DTO.ChiTietSanPham;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChiTietSanPhamDAO {
 
@@ -192,5 +193,35 @@ public class ChiTietSanPhamDAO {
         }
 
         return sp;
+    }
+
+    public List<String> timNhaCungCapTheoMaSP(String masp) {
+        DBConnect.open();
+        Connection connection = DBConnect.getConnection();
+        List<String> nccList = new ArrayList<>();
+        String sql = "SELECT DISTINCT pn.nhacungcap " +
+                "FROM chitietsanpham ctsp " +
+                "JOIN chitietphieunhap ctpn ON ctsp.MaVach = ctpn.MaVach " +
+                "JOIN phieunhap pn ON ctpn.MaPN = pn.MaPN " +
+                "WHERE ctsp.MaSP = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, masp); // Use mavach
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                 nccList.add(rs.getString("nhacungcap"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return nccList;
     }
 }

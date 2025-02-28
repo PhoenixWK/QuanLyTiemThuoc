@@ -5,6 +5,7 @@ import DTO.ChiTietSanPham;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChiTietSanPhamBUS {
     private ChiTietSanPhamDAO chiTietSanPhamDAO;
@@ -81,5 +82,9 @@ public class ChiTietSanPhamBUS {
     public ArrayList<ChiTietSanPham> hienThiTatCaSanPham() {
         ArrayList<ChiTietSanPham> danhSachSanPham = chiTietSanPhamDAO.layTatCaSanPham();
         return danhSachSanPham;
+    }
+
+    public List<String> layDanhSachNhaCungCap(String maSP) {
+        return chiTietSanPhamDAO.timNhaCungCapTheoMaSP(maSP);
     }
 }

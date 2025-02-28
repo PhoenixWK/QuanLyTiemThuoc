@@ -11,7 +11,7 @@ public abstract class DBConnect {
  
         private static String URL = "jdbc:mysql://localhost:3306/QuanLyNhaThuoc";
         private static String user = "root";
-        private static String pass = "johndoe@123";
+        private static String pass = "090723";
 
         public static Connection getConnection() {
             try {
