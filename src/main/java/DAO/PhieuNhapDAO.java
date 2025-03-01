@@ -101,7 +101,7 @@ public class PhieuNhapDAO {
         try (Connection con = DBConnect.getConnection(); 
              PreparedStatement st = con.prepareStatement(sql)) {
              
-            st.setString(0, ma);
+            st.setString(1, ma);
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
                     result = new PhieuNhap(rs.getString("maPN"), 

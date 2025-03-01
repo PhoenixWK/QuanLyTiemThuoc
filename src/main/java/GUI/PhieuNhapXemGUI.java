@@ -269,9 +269,16 @@ public class PhieuNhapXemGUI extends JPanel {
 		            if (txtTimKiem.getText().isEmpty()) {
 		                ThongBao.baoLoi("Vui lòng nhập phiếu nhập");
 		            } else {
-		                findDS(new ArrayList<PhieuNhap>() {
-		                    { add(bus.timPhieuNhap(txtTimKiem.getText())); }
-		                });
+						PhieuNhap pn = bus.timPhieuNhap(txtTimKiem.getText());
+						if(pn != null) {
+							findDS(new ArrayList<PhieuNhap>() {
+								{
+									add(pn);
+								}
+							});
+						}else {
+							modelDS.setRowCount(0);
+						}
 		            }
 		            return;
 		        }
@@ -621,10 +628,9 @@ public class PhieuNhapXemGUI extends JPanel {
 	
 	private void findDS(ArrayList<PhieuNhap> listPN) {
 		if (listPN == null || listPN.size() == 0) {
-//			ThongBao.baoLoi("Bảng không có dữ liệu hoặc dữ liệu không hợp lệ");
-//			return;
-			modelDS.setRowCount(0);
-		}
+		ThongBao.baoLoi("Bảng không có dữ liệu hoặc dữ liệu không hợp lệ");
+
+        }
 		else 
 			loadDS(listPN);
 	}
