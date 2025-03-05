@@ -61,7 +61,6 @@ public class HomeGUI extends JFrame {
 	private JButton btnDuocSi;
 	private JButton btnPhieuNhap;
 	private JButton btnHoaDon;
-	private JButton btnTieuHuy;
 	private JButton btnThongKe;
 	private JButton btnGioiThieu;
 	private JButton btnMauSac;
@@ -311,33 +310,6 @@ public class HomeGUI extends JFrame {
 		});
 		btnHoaDon.setMaximumSize(new Dimension(270, 50));
 		
-		btnTieuHuy = new JButton("TIÊU HỦY");
-		btnTieuHuy.setHorizontalAlignment(SwingConstants.LEFT);
-		btnTieuHuy.setIcon(new ImageIcon("img/th.png"));
-		btnTieuHuy.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				btnTieuHuy.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				btnTieuHuy.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		});
-		btnTieuHuy.setBorder(new EmptyBorder(0, 35, 0, 0));
-		btnTieuHuy.setFocusable(false);
-		btnTieuHuy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setCurrent(btnTieuHuy);
-				setTitle(tenTiem + "Quản lý tiêu hủy");
-				pnForm.removeAll();
-				pnForm.add(new TieuHuyGUI(maDS));
-				pnForm.validate();
-				pnForm.repaint();
-			}
-		});
-		btnTieuHuy.setMaximumSize(new Dimension(270, 50));
-		
 		btnThongKe = new JButton("THỐNG KÊ");
 		btnThongKe.setHorizontalAlignment(SwingConstants.LEFT);
 		btnThongKe.setIcon(new ImageIcon("img/tk.png"));
@@ -553,14 +525,12 @@ public class HomeGUI extends JFrame {
 			menu.add(2, btnNhaCungCap);
 			pnButton.add(btnNhaSanXuat, 3);
 			menu.add(3, btnNhaSanXuat);
-			pnButton.add(btnTieuHuy, 4);
-			menu.add(4, btnTieuHuy);
-			pnButton.add(btnPhieuNhap, 5);
-			menu.add(5, btnPhieuNhap);
-			pnButton.add(btnHoaDon, 6);
-			menu.add(6, btnHoaDon);
-			pnButton.add(btnThongKe, 7);
-			menu.add(7, btnThongKe);
+			pnButton.add(btnPhieuNhap, 4);
+			menu.add(4, btnPhieuNhap);
+			pnButton.add(btnHoaDon, 5);
+			menu.add(5, btnHoaDon);
+			pnButton.add(btnThongKe, 6);
+			menu.add(6, btnThongKe);
 			quyen -= Math.pow(2,1);
 		}
 		if (quyen == 1) {
@@ -614,8 +584,6 @@ public class HomeGUI extends JFrame {
 			((PhieuNhapGUI)pnForm.getComponent(0)).repainting();
 		else if (btnCurrent == btnHoaDon)
 			((HoaDonGUI)pnForm.getComponent(0)).repainting();
-		else if (btnCurrent == btnTieuHuy)
-			((TieuHuyGUI)pnForm.getComponent(0)).repainting();
 		else if (btnCurrent == btnThongKe)
 			((ThongKeGUI)pnForm.getComponent(0)).repainting();
 		
